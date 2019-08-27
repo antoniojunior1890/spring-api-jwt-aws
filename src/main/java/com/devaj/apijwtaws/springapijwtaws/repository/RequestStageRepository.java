@@ -1,4 +1,4 @@
-package com.devaj.apijwtaws.springapijwtaws.domain.repository;
+package com.devaj.apijwtaws.springapijwtaws.repository;
 
 import com.devaj.apijwtaws.springapijwtaws.domain.model.Request;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.RequestStage;

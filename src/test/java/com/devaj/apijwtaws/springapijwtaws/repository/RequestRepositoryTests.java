@@ -2,11 +2,8 @@ package com.devaj.apijwtaws.springapijwtaws.repository;
 
 
 import com.devaj.apijwtaws.springapijwtaws.domain.enums.RequestState;
-import com.devaj.apijwtaws.springapijwtaws.domain.enums.Role;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.Request;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.User;
-import com.devaj.apijwtaws.springapijwtaws.domain.repository.RequestRepository;
-import com.devaj.apijwtaws.springapijwtaws.domain.repository.UserRepository;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;

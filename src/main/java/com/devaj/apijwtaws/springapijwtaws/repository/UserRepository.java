@@ -1,4 +1,4 @@
-package com.devaj.apijwtaws.springapijwtaws.domain.repository;
+package com.devaj.apijwtaws.springapijwtaws.repository;
 
 import com.devaj.apijwtaws.springapijwtaws.domain.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
