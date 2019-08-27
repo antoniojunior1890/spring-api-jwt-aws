@@ -1,5 +1,6 @@
 package com.devaj.apijwtaws.springapijwtaws.domain.model;
 
+import com.devaj.apijwtaws.springapijwtaws.domain.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,7 @@ public class User {
     private String name;
     private String email;
     private String password;
+    private Role role;
     private List<Request> requests = new ArrayList<Request>();
     private List<RequestStage> stages = new ArrayList<RequestStage>();
 }
