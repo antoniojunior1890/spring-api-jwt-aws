@@ -3,6 +3,8 @@ package com.devaj.apijwtaws.springapijwtaws.repository;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.Request;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.RequestStage;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -10,5 +12,10 @@ import java.util.List;
 @Repository
 public interface RequestStageRepository extends JpaRepository<RequestStage, Long> {
 
-    List<RequestStage> findAllByRequestId(Long id);
+    @Query("select rs from request_stage rs " +
+            "join fetch rs.request " +
+            "join fetch rs.owner where rs.request.id = :id")
+    List<RequestStage> findAllByRequestId(@Param("id") Long id);
+
+//    List<RequestStage> findAllByRequestId(Long id);
 }

@@ -16,10 +16,14 @@ import java.util.Optional;
 @Repository
 public interface RequestRepository extends JpaRepository<Request, Long> {
 
-    List<Request> findAllByOwnerId(Long id);
+    @Query("select r from request r join fetch r.owner where r.owner.id = :id")
+    List<Request> findAllByOwnerId(@Param("id") Long id);
 
     @Modifying
     @Transactional(readOnly = false)
     @Query("update request r set r.state = :state where r.id = :id")
     int updateStatus(@Param("id") Long id, @Param("state") RequestState state);
+
+    @Query("select r from request r join fetch r.owner")
+    List<Request> findAllFechOwner();
 }

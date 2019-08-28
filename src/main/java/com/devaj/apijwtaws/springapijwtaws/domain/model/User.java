@@ -1,6 +1,8 @@
 package com.devaj.apijwtaws.springapijwtaws.domain.model;
 
 import com.devaj.apijwtaws.springapijwtaws.domain.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +31,8 @@ public class User implements Serializable {
     private String email;
 
 
+    @Getter(onMethod = @__( @JsonIgnore))
+    @Setter(onMethod = @__( @JsonProperty))
     @Column(length = 100, nullable = false)
     private String password;
 
@@ -36,9 +40,11 @@ public class User implements Serializable {
     @Column(length = 20, nullable = false)
     private Role role;
 
+    @Getter(onMethod = @__( @JsonIgnore))
     @OneToMany(mappedBy = "owner")
     private List<Request> requests = new ArrayList<Request>();
 
+    @Getter(onMethod = @__( @JsonIgnore ))
     @OneToMany(mappedBy = "owner")
     private List<RequestStage> stages = new ArrayList<RequestStage>();
 }

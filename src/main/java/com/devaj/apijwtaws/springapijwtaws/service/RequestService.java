@@ -39,7 +39,7 @@ public class RequestService {
     }
 
     public List<Request> listAll(){
-        List<Request> requests = requestRepository.findAll();
+        List<Request> requests = requestRepository.findAllFechOwner();
         return requests;
     }
 
