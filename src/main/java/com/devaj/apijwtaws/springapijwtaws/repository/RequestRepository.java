@@ -21,7 +21,10 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     @Query("select r from request r join fetch r.owner where r.owner.id = :id")
     List<Request> findAllByOwnerId(@Param("id") Long id);
 
-    Page<Request> findAllByOwnerId(Long id, Pageable pageable);
+    @Query(value = "select r from request r inner join fetch r.owner where r.owner.id = :id",
+            countQuery = "select count (r) from request r inner join r.owner where r.owner.id = :id")
+    Page<Request> findAllByOwnerId(@Param("id") Long id, Pageable pageable);
+//    Page<Request> findAllByOwnerId(Long id, Pageable pageable);
 
     @Modifying
     @Transactional(readOnly = false)
