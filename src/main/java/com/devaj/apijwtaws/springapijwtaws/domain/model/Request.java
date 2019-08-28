@@ -18,17 +18,6 @@ import java.util.List;
 @Getter
 @Setter
 @Entity(name = "request")
-//@NamedEntityGraph(
-//        name = "request-entity-graph",
-//        attributeNodes = {
-////                @NamedAttributeNode("id"),
-////                @NamedAttributeNode("subject"),
-////                @NamedAttributeNode("description"),
-////                @NamedAttributeNode("creation_date"),
-////                @NamedAttributeNode("state"),
-//                @NamedAttributeNode("owner"),
-//        }
-//)
 public class Request implements Serializable {
 
     private static final long serialVersionUID = 1L;
