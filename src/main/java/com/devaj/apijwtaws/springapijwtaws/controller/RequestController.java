@@ -1,9 +1,11 @@
 package com.devaj.apijwtaws.springapijwtaws.controller;
 
 import com.devaj.apijwtaws.springapijwtaws.domain.model.Request;
+import com.devaj.apijwtaws.springapijwtaws.domain.model.RequestStage;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.User;
 import com.devaj.apijwtaws.springapijwtaws.dto.UserLogindto;
 import com.devaj.apijwtaws.springapijwtaws.service.RequestService;
+import com.devaj.apijwtaws.springapijwtaws.service.RequestStageService;
 import com.devaj.apijwtaws.springapijwtaws.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,9 @@ public class RequestController {
 
     @Autowired
     private RequestService requestService;
+
+    @Autowired
+    private RequestStageService requestStageService;
 
     @PostMapping
     public ResponseEntity<Request> save(@RequestBody Request request){
@@ -44,4 +49,9 @@ public class RequestController {
         return ResponseEntity.ok(requests);
     }
 
+    @GetMapping("/{id}/request-stages")
+    public ResponseEntity<List<RequestStage>> listAllStagesByRequestId(@PathVariable("id") Long id){
+        List<RequestStage> requestStageList = requestStageService.listAllByResquestId(id);
+        return ResponseEntity.ok(requestStageList);
+    }
 }
