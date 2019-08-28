@@ -1,7 +1,9 @@
 package com.devaj.apijwtaws.springapijwtaws.controller;
 
+import com.devaj.apijwtaws.springapijwtaws.domain.model.Request;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.User;
 import com.devaj.apijwtaws.springapijwtaws.dto.UserLogindto;
+import com.devaj.apijwtaws.springapijwtaws.service.RequestService;
 import com.devaj.apijwtaws.springapijwtaws.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,11 +13,14 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "users")
+@RequestMapping("users")
 public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RequestService requestService;
 
     @PostMapping
     public ResponseEntity<User> save(@RequestBody User user){
@@ -46,5 +51,11 @@ public class UserController {
     public ResponseEntity<User> login(@RequestBody UserLogindto userLogindto){
         User loggedUser = userService.login(userLogindto.getEmail(), userLogindto.getPassword() );
         return ResponseEntity.ok(loggedUser);
+    }
+
+    @GetMapping("/{id}/requests")
+    public ResponseEntity<List<Request>> listAllRequestsByOwnerId(@PathVariable("id") Long id){
+        List<Request> requests = requestService.listAllByOwnerId(id);
+        return ResponseEntity.ok(requests);
     }
 }
