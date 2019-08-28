@@ -3,6 +3,7 @@ package com.devaj.apijwtaws.springapijwtaws.service;
 import com.devaj.apijwtaws.springapijwtaws.domain.enums.RequestState;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.Request;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.User;
+import com.devaj.apijwtaws.springapijwtaws.exception.NotFoundException;
 import com.devaj.apijwtaws.springapijwtaws.repository.RequestRepository;
 import com.devaj.apijwtaws.springapijwtaws.repository.UserRepository;
 import com.devaj.apijwtaws.springapijwtaws.service.util.HashUtil;
@@ -35,7 +36,8 @@ public class RequestService {
 
     public Request getById(Long id){
         Optional<Request> result = requestRepository.findById(id);
-        return result.get();
+//        return result.get();
+        return result.orElseThrow(()-> new NotFoundException("Não há pedido com id "+id));
     }
 
     public List<Request> listAll(){

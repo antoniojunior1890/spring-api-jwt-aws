@@ -1,8 +1,10 @@
 package com.devaj.apijwtaws.springapijwtaws.service;
 
 import com.devaj.apijwtaws.springapijwtaws.domain.model.User;
+import com.devaj.apijwtaws.springapijwtaws.exception.NotFoundException;
 import com.devaj.apijwtaws.springapijwtaws.repository.UserRepository;
 import com.devaj.apijwtaws.springapijwtaws.service.util.HashUtil;
+import org.springframework.beans.NotReadablePropertyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sun.rmi.runtime.Log;
@@ -36,7 +38,7 @@ public class UserService {
 
     public User getById(Long id){
         Optional<User> result = userRepository.findById(id);
-        return result.get();
+        return result.orElseThrow(()-> new NotFoundException("Não há usuário com id "+id));
     }
 
     public List<User> listAll(){
