@@ -1,5 +1,7 @@
 package com.devaj.apijwtaws.springapijwtaws.controller;
 
+import com.devaj.apijwtaws.springapijwtaws.domain.model.Pageable.PageModel;
+import com.devaj.apijwtaws.springapijwtaws.domain.model.Pageable.PageRequestModel;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.Request;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.User;
 import com.devaj.apijwtaws.springapijwtaws.dto.UserLogindto;
@@ -42,9 +44,14 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> listAll(){
-        List<User> users = userService.listAll();
-        return ResponseEntity.ok(users);
+    public ResponseEntity<PageModel<User>> listAll(
+                        @RequestParam("page") int page,
+                        @RequestParam("size") int size
+    ){
+        PageRequestModel pr = new PageRequestModel(page, size);
+
+        PageModel<User> userPageModel = userService.listAllOnLazyMode(pr);
+        return ResponseEntity.ok(userPageModel);
     }
 
     @PostMapping("/login")
@@ -54,8 +61,13 @@ public class UserController {
     }
 
     @GetMapping("/{id}/requests")
-    public ResponseEntity<List<Request>> listAllRequestsByOwnerId(@PathVariable("id") Long id){
-        List<Request> requests = requestService.listAllByOwnerId(id);
-        return ResponseEntity.ok(requests);
+    public ResponseEntity<PageModel<Request>> listAllRequestsByOwnerId(@PathVariable("id") Long id,
+                                                                  @RequestParam("page") int page,
+                                                                  @RequestParam("size") int size){
+
+        PageRequestModel pr = new PageRequestModel(page, size);
+
+        PageModel<Request> pm = requestService.listAllByOwnerIdOnLazyMode(id, pr);
+        return ResponseEntity.ok(pm);
     }
 }

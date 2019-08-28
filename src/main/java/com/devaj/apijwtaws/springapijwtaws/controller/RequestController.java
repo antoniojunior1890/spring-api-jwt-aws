@@ -1,5 +1,7 @@
 package com.devaj.apijwtaws.springapijwtaws.controller;
 
+import com.devaj.apijwtaws.springapijwtaws.domain.model.Pageable.PageModel;
+import com.devaj.apijwtaws.springapijwtaws.domain.model.Pageable.PageRequestModel;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.Request;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.RequestStage;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.User;
@@ -44,14 +46,22 @@ public class RequestController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Request>> listAll(){
-        List<Request> requests = requestService.listAll();
-        return ResponseEntity.ok(requests);
+    public ResponseEntity<PageModel<Request>> listAll(
+            @RequestParam("page") int page,
+            @RequestParam("size") int size
+    ){
+        PageRequestModel pr = new PageRequestModel(page, size);
+
+        PageModel<Request> requestPageModel = requestService.listAllOnLazyMode(pr);
+        return ResponseEntity.ok(requestPageModel);
     }
 
     @GetMapping("/{id}/request-stages")
-    public ResponseEntity<List<RequestStage>> listAllStagesByRequestId(@PathVariable("id") Long id){
-        List<RequestStage> requestStageList = requestStageService.listAllByResquestId(id);
-        return ResponseEntity.ok(requestStageList);
+    public ResponseEntity<PageModel<RequestStage>> listAllStagesByRequestId(@PathVariable("id") Long id,
+                                                                            @RequestParam("page") int page,
+                                                                            @RequestParam("size") int size){
+        PageRequestModel pr = new PageRequestModel(page, size);
+        PageModel<RequestStage> requestStagePageModel = requestStageService.listAllByRequestIdOnLazyMode(id, pr);
+        return ResponseEntity.ok(requestStagePageModel);
     }
 }

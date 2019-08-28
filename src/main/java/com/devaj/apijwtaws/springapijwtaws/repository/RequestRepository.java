@@ -3,6 +3,8 @@ package com.devaj.apijwtaws.springapijwtaws.repository;
 import com.devaj.apijwtaws.springapijwtaws.domain.enums.RequestState;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.Request;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,6 +21,8 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     @Query("select r from request r join fetch r.owner where r.owner.id = :id")
     List<Request> findAllByOwnerId(@Param("id") Long id);
 
+    Page<Request> findAllByOwnerId(Long id, Pageable pageable);
+
     @Modifying
     @Transactional(readOnly = false)
     @Query("update request r set r.state = :state where r.id = :id")
@@ -26,4 +30,5 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 
     @Query("select r from request r join fetch r.owner")
     List<Request> findAllFechOwner();
+
 }
