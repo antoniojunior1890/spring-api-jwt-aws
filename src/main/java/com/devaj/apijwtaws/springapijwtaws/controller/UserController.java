@@ -5,7 +5,9 @@ import com.devaj.apijwtaws.springapijwtaws.domain.model.Pageable.PageRequestMode
 import com.devaj.apijwtaws.springapijwtaws.domain.model.Request;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.User;
 import com.devaj.apijwtaws.springapijwtaws.dto.UserLogindto;
+import com.devaj.apijwtaws.springapijwtaws.dto.UserSavedto;
 import com.devaj.apijwtaws.springapijwtaws.dto.UserUpdateRoledto;
+import com.devaj.apijwtaws.springapijwtaws.dto.UserUpdatedto;
 import com.devaj.apijwtaws.springapijwtaws.service.RequestService;
 import com.devaj.apijwtaws.springapijwtaws.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +28,17 @@ public class UserController {
     private RequestService requestService;
 
     @PostMapping
-    public ResponseEntity<User> save(@RequestBody User user){
+    public ResponseEntity<User> save(@RequestBody @Valid UserSavedto userSavedto){
+        User user = userSavedto.transformToUser();
+
         User createdUser = userService.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> update(@PathVariable("id") Long id, @RequestBody User user){
+    public ResponseEntity<User> update(@PathVariable("id") Long id, @RequestBody @Valid UserUpdatedto userUpdatedto){
+        User user = userUpdatedto.transformToUser();
+
         user.setId(id);
         User updatedUser = userService.update(user);
         return ResponseEntity.ok(updatedUser);
@@ -73,7 +79,7 @@ public class UserController {
     }
 
     @PatchMapping("/role/{id}")
-    public ResponseEntity<?> updateRole(@RequestBody UserUpdateRoledto userRoledto,
+    public ResponseEntity<?> updateRole(@RequestBody @Valid UserUpdateRoledto userRoledto,
                                         @PathVariable("id") Long id){
         User user = new User();
         user.setId(id);

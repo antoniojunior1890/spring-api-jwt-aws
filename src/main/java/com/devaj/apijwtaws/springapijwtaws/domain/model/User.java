@@ -37,7 +37,7 @@ public class User implements Serializable {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 20, nullable = false)
+    @Column(length = 20, nullable = false, updatable = false)
     private Role role;
 
     @Getter(onMethod = @__( @JsonIgnore))
