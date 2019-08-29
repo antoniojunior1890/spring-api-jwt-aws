@@ -18,6 +18,8 @@ import java.util.List;
 @Getter
 @Setter
 @Entity(name = "request")
+@NamedEntityGraph(name = "request-entity-graph", attributeNodes = {
+@NamedAttributeNode("owner"), })
 public class Request implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -40,7 +42,7 @@ public class Request implements Serializable {
     @Column(length = 12, nullable = false)
     private RequestState state;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
 

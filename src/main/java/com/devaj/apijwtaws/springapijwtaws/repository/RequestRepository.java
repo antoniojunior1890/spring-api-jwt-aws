@@ -38,4 +38,9 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
 
     @EntityGraph(attributePaths = {"owner"})
     Page<Request> findAll(Pageable pageable);
+
+    @EntityGraph(attributePaths = {"owner"})
+    Optional<Request> findById(@Param("id") Long id);
+
+
 }

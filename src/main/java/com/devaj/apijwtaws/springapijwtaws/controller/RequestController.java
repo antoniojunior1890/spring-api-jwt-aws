@@ -5,15 +5,19 @@ import com.devaj.apijwtaws.springapijwtaws.domain.model.Pageable.PageRequestMode
 import com.devaj.apijwtaws.springapijwtaws.domain.model.Request;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.RequestStage;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.User;
+import com.devaj.apijwtaws.springapijwtaws.dto.RequestSavedto;
+import com.devaj.apijwtaws.springapijwtaws.dto.RequestUpdatedto;
 import com.devaj.apijwtaws.springapijwtaws.dto.UserLogindto;
 import com.devaj.apijwtaws.springapijwtaws.service.RequestService;
 import com.devaj.apijwtaws.springapijwtaws.service.RequestStageService;
 import com.devaj.apijwtaws.springapijwtaws.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -27,13 +31,17 @@ public class RequestController {
     private RequestStageService requestStageService;
 
     @PostMapping
-    public ResponseEntity<Request> save(@RequestBody Request request){
+    public ResponseEntity<Request> save(@RequestBody @Valid RequestSavedto requestSavedto){
+        Request request = requestSavedto.transformToRequest();
+
         Request createdRequest = requestService.save(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdRequest);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Request> update(@PathVariable("id") Long id, @RequestBody Request request){
+    public ResponseEntity<Request> update(@PathVariable("id") Long id, @RequestBody @Valid RequestUpdatedto requestUpdatedto){
+        Request request = requestUpdatedto.transformToRequest();
+
         request.setId(id);
         Request updatedRequest = requestService.update(request);
         return ResponseEntity.ok(updatedRequest);
