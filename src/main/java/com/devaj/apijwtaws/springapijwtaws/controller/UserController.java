@@ -5,6 +5,7 @@ import com.devaj.apijwtaws.springapijwtaws.domain.model.Pageable.PageRequestMode
 import com.devaj.apijwtaws.springapijwtaws.domain.model.Request;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.User;
 import com.devaj.apijwtaws.springapijwtaws.dto.UserLogindto;
+import com.devaj.apijwtaws.springapijwtaws.dto.UserUpdateRoledto;
 import com.devaj.apijwtaws.springapijwtaws.service.RequestService;
 import com.devaj.apijwtaws.springapijwtaws.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,5 +68,17 @@ public class UserController {
 
         PageModel<Request> pm = requestService.listAllByOwnerIdOnLazyMode(id, pr);
         return ResponseEntity.ok(pm);
+    }
+
+    @PatchMapping("/role/{id}")
+    public ResponseEntity<?> updateRole(@RequestBody UserUpdateRoledto userRoledto,
+                                        @PathVariable("id") Long id){
+        User user = new User();
+        user.setId(id);
+        user.setRole(userRoledto.getRole());
+
+        userService.updateRole(user);
+
+        return ResponseEntity.ok().build();
     }
 }
