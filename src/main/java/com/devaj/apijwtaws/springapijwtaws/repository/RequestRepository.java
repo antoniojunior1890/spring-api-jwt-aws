@@ -36,4 +36,6 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     @Query("select r from request r join fetch r.owner")
     List<Request> findAllFechOwner();
 
+    @EntityGraph(attributePaths = {"owner"})
+    Page<Request> findAll(Pageable pageable);
 }

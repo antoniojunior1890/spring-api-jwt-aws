@@ -1,6 +1,8 @@
 package com.devaj.apijwtaws.springapijwtaws.repository;
 
 import com.devaj.apijwtaws.springapijwtaws.domain.model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,6 +16,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select u from user u where u.email = :email and u.password = :password")
     Optional<User> login(@Param("email")String email, @Param("password") String password);
 
-//    @Query("select u from user u")
+//    @Query(value = "select u from user u", countQuery = "select count (u) from user u")
 //    Page<User> findAllOnLazyMode(Pageable pageable);
 }

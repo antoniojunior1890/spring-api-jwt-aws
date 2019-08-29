@@ -51,7 +51,7 @@ public class RequestService {
 
     public PageModel<Request> listAllOnLazyMode(PageRequestModel pr){
         Pageable pageable = PageRequest.of(pr.getPage(), pr.getSize());
-        Page<Request> page = requestRepository.findAll(pageable);
+        Page<Request> page = requestRepository.findAll(pageable);  //findAll(pageable);
 
         PageModel<Request> pageModel = new PageModel<>((int)page.getTotalElements(),
                 page.getSize(),
