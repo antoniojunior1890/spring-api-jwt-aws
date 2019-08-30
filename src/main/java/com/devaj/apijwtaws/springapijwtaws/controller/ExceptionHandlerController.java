@@ -1,6 +1,7 @@
 package com.devaj.apijwtaws.springapijwtaws.controller;
 
 import com.devaj.apijwtaws.springapijwtaws.exception.ApiError;
+import com.devaj.apijwtaws.springapijwtaws.exception.ApiErrorList;
 import com.devaj.apijwtaws.springapijwtaws.exception.NotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @ControllerAdvice
 public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
@@ -30,10 +33,13 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
             HttpStatus status,
             WebRequest request) {
 
-        String defauldMessage = ex.getBindingResult().getAllErrors().get(0).getDefaultMessage();
+        List<String> errorList = new ArrayList<String>();
+        ex.getBindingResult().getAllErrors().forEach(e -> errorList.add(e.getDefaultMessage()));
 
-        ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST.value(), defauldMessage, new Date());
+        String defauldMessage = "Campos invalidos";
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
+        ApiErrorList apiErrorList = new ApiErrorList(HttpStatus.BAD_REQUEST.value(), defauldMessage, new Date(), errorList);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiErrorList);
     }
 }
