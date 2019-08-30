@@ -1,5 +1,7 @@
-package com.devaj.apijwtaws.springapijwtaws.exception;
+package com.devaj.apijwtaws.springapijwtaws.controller;
 
+import com.devaj.apijwtaws.springapijwtaws.exception.ApiError;
+import com.devaj.apijwtaws.springapijwtaws.exception.NotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.Date;
 
 @ControllerAdvice
-public class ResourceExceptionHandler extends ResponseEntityExceptionHandler {
+public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ApiError> handleNotFoundException(NotFoundException ex){
