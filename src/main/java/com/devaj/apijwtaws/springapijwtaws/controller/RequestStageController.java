@@ -3,6 +3,7 @@ package com.devaj.apijwtaws.springapijwtaws.controller;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.Request;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.RequestStage;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.User;
+import com.devaj.apijwtaws.springapijwtaws.dto.RequestStageSavedto;
 import com.devaj.apijwtaws.springapijwtaws.dto.UserLogindto;
 import com.devaj.apijwtaws.springapijwtaws.service.RequestService;
 import com.devaj.apijwtaws.springapijwtaws.service.RequestStageService;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -22,7 +24,9 @@ public class RequestStageController {
     private RequestStageService requestStageService;
 
     @PostMapping
-    public ResponseEntity<RequestStage> save(@RequestBody RequestStage requestStage){
+    public ResponseEntity<RequestStage> save(@RequestBody @Valid RequestStageSavedto requestStageSavedto){
+        RequestStage requestStage = requestStageSavedto.transformToRequestStage();
+
         RequestStage createdRequestStage = requestStageService.save(requestStage);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdRequestStage);
     }
