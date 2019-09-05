@@ -13,6 +13,11 @@ import com.devaj.apijwtaws.springapijwtaws.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,6 +31,9 @@ public class UserController {
 
     @Autowired
     private RequestService requestService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @PostMapping
     public ResponseEntity<User> save(@RequestBody @Valid UserSavedto userSavedto){
@@ -63,8 +71,12 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody @Valid UserLogindto userLogindto){
-        User loggedUser = userService.login(userLogindto.getEmail(), userLogindto.getPassword() );
-        return ResponseEntity.ok(loggedUser);
+//        User loggedUser = userService.login(userLogindto.getEmail(), userLogindto.getPassword() );
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userLogindto.getEmail(), userLogindto.getPassword());
+        Authentication authentication = authenticationManager.authenticate(token);
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        return ResponseEntity.ok(null);
     }
 
     @GetMapping("/{id}/requests")
