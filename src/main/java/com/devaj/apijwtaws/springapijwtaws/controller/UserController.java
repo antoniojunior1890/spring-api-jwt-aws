@@ -1,5 +1,6 @@
 package com.devaj.apijwtaws.springapijwtaws.controller;
 
+import com.devaj.apijwtaws.springapijwtaws.domain.enums.Role;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.Pageable.PageModel;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.Pageable.PageRequestModel;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.Request;
@@ -14,6 +15,7 @@ import com.devaj.apijwtaws.springapijwtaws.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -41,6 +43,7 @@ public class UserController {
     @Autowired
     private JwtManager jwtManager;
 
+    @Secured({"ADMINISTRATOR"})
     @PostMapping
     public ResponseEntity<User> save(@RequestBody @Valid UserSavedto userSavedto){
         User user = userSavedto.transformToUser();
@@ -109,6 +112,7 @@ public class UserController {
         return ResponseEntity.ok(pm);
     }
 
+    @Secured({"ADMINISTRATOR"})
     @PatchMapping("/role/{id}")
     public ResponseEntity<?> updateRole(@RequestBody @Valid UserUpdateRoledto userRoledto,
                                         @PathVariable("id") Long id){
