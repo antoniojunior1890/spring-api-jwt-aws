@@ -1,6 +1,5 @@
 package com.devaj.apijwtaws.springapijwtaws.controller;
 
-import com.devaj.apijwtaws.springapijwtaws.domain.enums.Role;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.Pageable.PageModel;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.Pageable.PageRequestModel;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.Request;
@@ -9,7 +8,6 @@ import com.devaj.apijwtaws.springapijwtaws.dto.UserLogindto;
 import com.devaj.apijwtaws.springapijwtaws.dto.UserSavedto;
 import com.devaj.apijwtaws.springapijwtaws.dto.UserUpdateRoledto;
 import com.devaj.apijwtaws.springapijwtaws.dto.UserUpdatedto;
-import com.devaj.apijwtaws.springapijwtaws.security.AccessManager;
 import com.devaj.apijwtaws.springapijwtaws.security.JwtManager;
 import com.devaj.apijwtaws.springapijwtaws.service.RequestService;
 import com.devaj.apijwtaws.springapijwtaws.service.UserService;
@@ -21,7 +19,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,9 +41,6 @@ public class UserController {
 
     @Autowired
     private JwtManager jwtManager;
-
-    @Autowired
-    private AccessManager accessManager;
 
     @Secured({"ROLE_ADMINISTRATOR"})
     @PostMapping

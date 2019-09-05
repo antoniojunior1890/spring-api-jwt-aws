@@ -4,23 +4,17 @@ import com.devaj.apijwtaws.springapijwtaws.domain.model.Pageable.PageModel;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.Pageable.PageRequestModel;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.Request;
 import com.devaj.apijwtaws.springapijwtaws.domain.model.RequestStage;
-import com.devaj.apijwtaws.springapijwtaws.domain.model.User;
 import com.devaj.apijwtaws.springapijwtaws.dto.RequestSavedto;
 import com.devaj.apijwtaws.springapijwtaws.dto.RequestUpdatedto;
-import com.devaj.apijwtaws.springapijwtaws.dto.UserLogindto;
-import com.devaj.apijwtaws.springapijwtaws.security.AccessManager;
 import com.devaj.apijwtaws.springapijwtaws.service.RequestService;
 import com.devaj.apijwtaws.springapijwtaws.service.RequestStageService;
-import com.devaj.apijwtaws.springapijwtaws.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("requests")
@@ -31,9 +25,6 @@ public class RequestController {
 
     @Autowired
     private RequestStageService requestStageService;
-
-    @Autowired
-    private AccessManager accessManager;
 
     @PostMapping
     public ResponseEntity<Request> save(@RequestBody @Valid RequestSavedto requestSavedto){
