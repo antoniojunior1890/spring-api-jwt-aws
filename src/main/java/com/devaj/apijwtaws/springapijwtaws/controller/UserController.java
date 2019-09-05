@@ -9,6 +9,7 @@ import com.devaj.apijwtaws.springapijwtaws.dto.UserLogindto;
 import com.devaj.apijwtaws.springapijwtaws.dto.UserSavedto;
 import com.devaj.apijwtaws.springapijwtaws.dto.UserUpdateRoledto;
 import com.devaj.apijwtaws.springapijwtaws.dto.UserUpdatedto;
+import com.devaj.apijwtaws.springapijwtaws.security.AccessManager;
 import com.devaj.apijwtaws.springapijwtaws.security.JwtManager;
 import com.devaj.apijwtaws.springapijwtaws.service.RequestService;
 import com.devaj.apijwtaws.springapijwtaws.service.UserService;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -43,6 +45,9 @@ public class UserController {
     @Autowired
     private JwtManager jwtManager;
 
+    @Autowired
+    private AccessManager accessManager;
+
     @Secured({"ADMINISTRATOR"})
     @PostMapping
     public ResponseEntity<User> save(@RequestBody @Valid UserSavedto userSavedto){
@@ -52,6 +57,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
+    @PreAuthorize("@accessManager.isOwner(#id)")
     @PutMapping("/{id}")
     public ResponseEntity<User> update(@PathVariable("id") Long id, @RequestBody @Valid UserUpdatedto userUpdatedto){
         User user = userUpdatedto.transformToUser();

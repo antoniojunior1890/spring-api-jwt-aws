@@ -8,6 +8,7 @@ import com.devaj.apijwtaws.springapijwtaws.domain.model.User;
 import com.devaj.apijwtaws.springapijwtaws.dto.RequestSavedto;
 import com.devaj.apijwtaws.springapijwtaws.dto.RequestUpdatedto;
 import com.devaj.apijwtaws.springapijwtaws.dto.UserLogindto;
+import com.devaj.apijwtaws.springapijwtaws.security.AccessManager;
 import com.devaj.apijwtaws.springapijwtaws.service.RequestService;
 import com.devaj.apijwtaws.springapijwtaws.service.RequestStageService;
 import com.devaj.apijwtaws.springapijwtaws.service.UserService;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -30,6 +32,9 @@ public class RequestController {
     @Autowired
     private RequestStageService requestStageService;
 
+    @Autowired
+    private AccessManager accessManager;
+
     @PostMapping
     public ResponseEntity<Request> save(@RequestBody @Valid RequestSavedto requestSavedto){
         Request request = requestSavedto.transformToRequest();
@@ -38,6 +43,7 @@ public class RequestController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdRequest);
     }
 
+    @PreAuthorize("@accessManager.isRequestOwner(#id)")
     @PutMapping("/{id}")
     public ResponseEntity<Request> update(@PathVariable("id") Long id, @RequestBody @Valid RequestUpdatedto requestUpdatedto){
         Request request = requestUpdatedto.transformToRequest();
