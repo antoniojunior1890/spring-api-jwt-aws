@@ -8,6 +8,7 @@ import com.devaj.apijwtaws.springapijwtaws.dto.UserLogindto;
 import com.devaj.apijwtaws.springapijwtaws.dto.UserSavedto;
 import com.devaj.apijwtaws.springapijwtaws.dto.UserUpdateRoledto;
 import com.devaj.apijwtaws.springapijwtaws.dto.UserUpdatedto;
+import com.devaj.apijwtaws.springapijwtaws.security.JwtManager;
 import com.devaj.apijwtaws.springapijwtaws.service.RequestService;
 import com.devaj.apijwtaws.springapijwtaws.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("users")
@@ -34,6 +37,9 @@ public class UserController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtManager jwtManager;
 
     @PostMapping
     public ResponseEntity<User> save(@RequestBody @Valid UserSavedto userSavedto){
@@ -70,13 +76,26 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody @Valid UserLogindto userLogindto){
+    public ResponseEntity<String> login(@RequestBody @Valid UserLogindto userLogindto){
 //        User loggedUser = userService.login(userLogindto.getEmail(), userLogindto.getPassword() );
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(userLogindto.getEmail(), userLogindto.getPassword());
         Authentication authentication = authenticationManager.authenticate(token);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return ResponseEntity.ok(null);
+
+        org.springframework.security.core.userdetails.User userSpring =
+                (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
+
+        String email = userSpring.getUsername();
+        List<String> roles = userSpring.getAuthorities()
+                .stream()
+                .map(a -> a.getAuthority())
+                .collect(Collectors.toList());
+
+        String jwt = jwtManager.createToken(email, roles);
+
+
+        return ResponseEntity.ok(jwt);
     }
 
     @GetMapping("/{id}/requests")
